@@ -1,0 +1,602 @@
+<!DOCTYPE HTML>
+<html lang="ja" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Haribote Embedded OS Rust Book</title>
+        
+        <meta name="robots" content="noindex" />
+        
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "light" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">はじめに</a></li><li class="chapter-item expanded "><a href="1_intro/embedded_os.html"><strong aria-hidden="true">1.</strong> 組み込みOSとは</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="1_intro/haribote_embedded_os.html"><strong aria-hidden="true">1.1.</strong> 本書で作る組み込みOS</a></li></ol></li><li class="chapter-item expanded "><a href="2_setup/setup.html"><strong aria-hidden="true">2.</strong> 開発環境の構築</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="2_setup/rust.html"><strong aria-hidden="true">2.1.</strong> Rustのインストール</a></li><li class="chapter-item expanded "><a href="2_setup/gdb.html"><strong aria-hidden="true">2.2.</strong> GDBのインストール</a></li><li class="chapter-item expanded "><a href="2_setup/openocd.html"><strong aria-hidden="true">2.3.</strong> OpenOCDのインストール</a></li></ol></li><li class="chapter-item expanded "><a href="3_rtfm/rtfm.html"><strong aria-hidden="true">3.</strong> RTFM</a></li><li class="chapter-item expanded "><a href="4_hello_world/hello_world.html"><strong aria-hidden="true">4.</strong> Hello, world!</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="4_hello_world/boot.html"><strong aria-hidden="true">4.1.</strong> プログラムの実行</a></li><li class="chapter-item expanded "><a href="4_hello_world/vector_table.html"><strong aria-hidden="true">4.2.</strong> メモリ上の配置</a></li><li class="chapter-item expanded "><a href="4_hello_world/run_hello_world.html"><strong aria-hidden="true">4.3.</strong> Hello, world!</a></li></ol></li><li class="chapter-item expanded "><a href="5_kernel_and_user/kernel_and_user.html"><strong aria-hidden="true">5.</strong> カーネルとユーザ</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="5_kernel_and_user/svcall.html"><strong aria-hidden="true">5.1.</strong> SVCall（システムコール）</a></li><li class="chapter-item expanded "><a href="5_kernel_and_user/task_switch.html"><strong aria-hidden="true">5.2.</strong> タスク切り替えの実装</a></li></ol></li><li class="chapter-item expanded "><a href="6_scheduler/scheduler.html"><strong aria-hidden="true">6.</strong> スケジューラの実装</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="6_scheduler/non-preemptive_multitasking.html"><strong aria-hidden="true">6.1.</strong> ノンプリエンプティブ・マルチタスク</a></li></ol></li><li class="chapter-item expanded "><a href="7_timer_interrupt/timer_interrupt.html"><strong aria-hidden="true">7.</strong> タイマ割り込み（SysTick例外）</a></li><li class="chapter-item expanded "><a href="8_preemptive_multitasking/preemptive_multitasking.html"><strong aria-hidden="true">8.</strong> プリエンプティブ・マルチタスク</a></li><li class="chapter-item expanded "><a href="9_gpio_peripheral/gpio_peripheral.html"><strong aria-hidden="true">9.</strong> GPIOペリフェラル</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><a href="references.html">参考文献</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">Haribote Embedded OS Rust Book</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1><a class="header" href="#はじめに" id="はじめに">はじめに</a></h1>
+<p>この本は，Rustという言語を使って組み込みOSを書くための入門書です．
+Rustに限らず，他の言語でも（組み込み）OSの自作をしたことがない方や，組み込みシステムの開発経験やベアメタル環境でのプログラミング経験がない方でも理解できるように，なるべくわかりやすく，詳しく説明していきます．
+読んでいく中でもし理解できないところがあったとしても，それで自信を失ったり諦めたりする必要はありません．新しいことに挑戦し，知識を取り入れるわけですから，分からないところがあって当然，全てを最初から理解するという方が難しいと思います．
+分からないところは検索をかけてみたり，それでも分からなければ1回飛ばしてしまうのもありかもしれません．
+この本が少しでもあなたのお役に立てれば幸いです．</p>
+<h2><a class="header" href="#想定する読者" id="想定する読者">想定する読者</a></h2>
+<p>この本は，Rustを用いた簡単なプログラムを書いたことがある方や，Rustを用いたプログラミングに慣れている方を読者として想定しており，Rustという言語自体の仕様や，基本的な文法にはあまり触れません．
+Rustについての知識がまだ足りないと感じられる方は，<a href="https://doc.rust-jp.rs/book/second-edition/">こちらのドキュメント（日本語）</a>や，本などを先にお読みになることをおすすめします．</p>
+<p>その他，組み込み開発などに関する知識については必要ありません．</p>
+<h2><a class="header" href="#フィードバック" id="フィードバック">フィードバック</a></h2>
+<p>もし誤植や，内容に誤りを発見した場合は，是非<a href="https://twitter.com/syaru_rs">Twitter</a>などでフィードバックしていただけると幸いです．</p>
+<h1><a class="header" href="#osとは" id="osとは">OSとは</a></h1>
+<p>OSという言葉は皆さんも聞いたことがあるでしょう．しかし，OSとは何かと聞かれると，なかなか説明が思いつかないという人は少なくないと思います．そこで，まずはOSの目的について説明します．</p>
+<p>OSの主な目的には，ハードウェアの抽象化やリソースの管理などがあります．ハードウェアの抽象化というのは，ユーザやアプリケーションに対して標準的なインターフェースを提供する機能のことで，リソースの管理は，マルチタスクにおけるプロセスの管理などです．つまり，ハードウェアのすぐ上で実行され，これらの機能を果たしているものをOSと呼ぶわけです．</p>
+<p>OSには，大きく分けて2種類のものがあります．1つは，汎用OS，そしてもう1つが組み込みOSです．とはいっても，最近ではLinuxが組み込み機器に使われることもあり，両者のはっきりとした境界はありません．順番に説明していきます．</p>
+<h2><a class="header" href="#汎用os" id="汎用os">汎用OS</a></h2>
+<p>OSというと，一般的に思い浮かべるのはWindows10やmacOS，Linux，Androidなどだと思います．これらは汎用OSと呼ばれるものです．汎用OSとは，文字通り，汎用的にさまざまな目的で利用できる機能をもったOSです．そのため，CPUやメモリなど，ハードウェアの性能が高いという特徴もあります．また，ユーザへのインターフェースとしての役割も非常に大きく，ファイルシステムなど，補助記憶装置を管理する仕組みや，さらにはウィンドウシステムなどのGUIを提供することもあります．</p>
+<p>簡単にいうと，パソコンやスマートフォンなどに搭載されているようなOSのことを汎用OSと言います．</p>
+<h2><a class="header" href="#組み込みos" id="組み込みos">組み込みOS</a></h2>
+<p>組み込みOSは，家電製品や自動車やIoTデバイスなどに使われます．そのため，用途も必要な機能も限られており，使うハードウェアの性能もそんなに高くないことが多いです．組み込みOSでは，汎用OSのように，画面を用いた高度なインターフェースを提供することはあまりなく，マウスやキーボードによる入力を行うこともありませんが，リアルタイム性が重視されるという，汎用OSにはなかった特徴があります．リアルタイム性とは，ある入力に対して出力が行われるまでに，時間的な制約が設けられるということです．特にこの性能が求められるという場合には，RTOS（リアルタイムOS）と呼ばれることもあります．</p>
+<p>筆者もあまり詳しくないので例をあげろと言われると難しいのですが，FreeRTOSやμITRONが有名な組み込みOSとしてあげられると思います．Rust製で言えば，Googleが開発したセキュリティキーにTockというRustで書かれたOSが使われています．</p>
+<h1><a class="header" href="#本書で作る組み込みos" id="本書で作る組み込みos">本書で作る組み込みOS</a></h1>
+<p>本書で最終的に完成するOSは，割り込み制御，GPIOペリフェラルのAPI，マルチタスクを行うための簡単なスケジューラを実装したもので，実用性はありません．しかし，これから組み込みOSを作ろうとしている方や，組み込みOS，もしくはOSについての知識を深めたいと思っている方にとって，この本は足がかりになると思います．</p>
+<h2><a class="header" href="#使用するボード" id="使用するボード">使用するボード</a></h2>
+<p align="center">
+<img title="F3" src="1_intro/./image/f3.jpg" width="540px">
+</p>
+<p>この本では，<a href="https://www.st.com/content/st_com/ja/products/evaluation-tools/product-evaluation-tools/mcu-mpu-eval-tools/stm32-mcu-mpu-eval-tools/stm32-discovery-kits/stm32f3discovery.html">STM32F3DISCOVERY</a>（以下F3）というボードを使います．ただし，この本で使用する機能は多くないので，他のボードでも，適宜読み替えていただく必要はありますが，再現可能だと思います．</p>
+<h1><a class="header" href="#開発環境の構築" id="開発環境の構築">開発環境の構築</a></h1>
+<p>筆者はMacで動作確認をしていますが，WindowsやLinux環境でも構築可能です.
+以下は，Macの場合の環境構築です．適宜ご自身の環境にあわせて読み替えてください．</p>
+<h1><a class="header" href="#rust" id="rust">Rust</a></h1>
+<p>以下のようにインストールします。</p>
+<pre><code class="language-shell">$ curl https://sh.rustup.rs -sSf | sh
+</code></pre>
+<p>これにより，<code>cargo</code>，<code>rustc</code>，<code>rustup</code>の3つがインストールされます．</p>
+<ul>
+<li><code>cargo</code>: ビルドシステム兼パッケージマネージャです．</li>
+<li><code>rustc</code>: Rustのコンパイラです．</li>
+<li><code>rustup</code>: Rustコンパイラのインストール/アップデートや，バージョン管理をしてくれるツールです．</li>
+</ul>
+<p>今回は<code>nightly</code>というリリースチャンネルを使うので，そのインストールも行います．</p>
+<pre><code class="language-shell">$ rustup install nightly
+</code></pre>
+<p>F3は，Cortex-M4Fプロセッサを搭載しています．
+クロスコンパイル用の環境を入れるために以下のコマンドを実行します．</p>
+<pre><code class="language-shell">$ rustup target add thumbv7em-none-eabihf
+</code></pre>
+<p>他のボードを使用している場合は，以下を参考にしてください．</p>
+<ul>
+<li><code>thumbv6m-none-eabi</code>: Cortex-M0，Cortex-M1プロセッサ向け</li>
+<li><code>thumbv7m-none-eabi</code>: Cortex-M3プロセッサ向け</li>
+<li><code>thumbv7em-none-eabi</code>: Cortex-M4，Cortex-M7プロセッサ向け</li>
+<li><code>thumbv7em-none-eabihf</code>: Cortex-M4F，Cortex-M7Fプロセッサ向け</li>
+</ul>
+<h1><a class="header" href="#gdb" id="gdb">GDB</a></h1>
+<p>デバッガがなければ，組み込みシステムの開発は非常に難しいです．簡単なコマンドで使えますので，これを機会に習得してしまいましょう．</p>
+<p>Homebrewを使ってインストールします．</p>
+<pre><code class="language-shell">$ brew tap armmbed/formulae
+$ brew install armmbed/formulae/arm-none-eabi-gcc
+</code></pre>
+<h1><a class="header" href="#openocd" id="openocd">OpenOCD</a></h1>
+<p>GDBは，F3上のST-Linkデバッグハードウェアと直接通信することはできません．OpenOCD（Open On-Chip Debugger）がGDBのTCP/IPベースのリモートデバッグプロトコルとST-LinkのUSBベースのプロトコルとの間に入って変換することで，GDBを用いたデバッグが可能になります．</p>
+<p>こちらもHomebrewを使ってインストールします．</p>
+<pre><code class="language-shell">$ brew install openocd
+</code></pre>
+<h2><a class="header" href="#接続確認" id="接続確認">接続確認</a></h2>
+<p>USBケーブルを使って，F3をPCに接続します．ボード端の中央にある&quot;USB ST-LINK&quot;と書いているところにケーブルを接続して下さい．</p>
+<p>次のコマンドを実行してください．</p>
+<pre><code class="language-shell">$ openocd -f interface/stlink-v2-1.cfg -f target/stm32f3x.cfg
+</code></pre>
+<p>下のような出力が得られ，ターミナルがブロックされた状態になれば，接続できています．</p>
+<blockquote>
+<p>F3以外を使っている場合は，あなたが使っているボードに合った引数をOpenOCDに与えることで同じように接続できます．</p>
+</blockquote>
+<pre><code>Open On-Chip Debugger 0.10.0
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+Info : auto-selecting first available session transport &quot;hla_swd&quot;. To override use 'transport select &lt;transport&gt;'.
+adapter speed: 1000 kHz
+adapter_nsrst_delay: 100
+Info : The selected transport took over low-level target control. The results might differ compared to plain JTAG/SWD
+none separate
+Info : Unable to match requested speed 1000 kHz, using 950 kHz
+Info : Unable to match requested speed 1000 kHz, using 950 kHz
+Info : clock speed 950 kHz
+Info : STLINK v2 JTAG v27 API v2 SWIM v15 VID 0x0483 PID 0x374B
+Info : using stlink api v2
+Info : Target voltage: 2.901598
+Info : stm32f3x.cpu: hardware has 6 breakpoints, 4 watchpoints
+</code></pre>
+<h1><a class="header" href="#rtfm" id="rtfm">RTFM</a></h1>
+<p>低レイヤーでのシステム開発では，マニュアルを読むということが重要です．この本でも，至る所でマニュアルを参照します．OSの上で動くプログラムを書くときとは違い，ハードウェアが抽象化（今度はこれは私たちがします！）されていないからです．読む必要がある部分だけでいいので，マニュアルを読み，ハードウェアの仕様を把握しましょう！</p>
+<p>皆さんも，このドキュメントと一緒に，横に，これらのマニュアルを開いて読み進めていただくことを推奨いたします．</p>
+<p><code>以下は，F3を用いる場合に参照するマニュアルですので，違うハードを使っている場合は，そのマニュアルを用意してください．</code></p>
+<blockquote>
+<ul>
+<li><a href="https://static.docs.arm.com/ddi0403/ed/DDI0403E_d_armv7m_arm.pdf">Arm®v7-M Architecture Reference Manual</a>（以下Armv7-m Manual）: ボードに乗っているCPUの基本的な仕様書です．アセンブラ命令の解説や，割り込みが発生したときの挙動，システムレジスタの仕様などが書かれています．</li>
+</ul>
+</blockquote>
+<blockquote>
+<ul>
+<li><a href="https://static.docs.arm.com/100166/0001/arm_cortexm4_processor_trm_100166_0001_00_en.pdf">ARM Cortex-M4 Processor Technical Reference Manual Revision r0p1 Documentation</a>（以下Cortex-m4 Manual）: 
+Arm v7-Mの仕様に基づいたアーキテクチャであるCortex-M4のマニュアルです．
+割り込みコントローラやメモリ保護機構などの解説があります．</li>
+</ul>
+</blockquote>
+<blockquote>
+<ul>
+<li><a href="https://www.st.com/resource/en/reference_manual/dm00043574-stm32f303xb-c-d-e-stm32f303x6-8-stm32f328x8-stm32f358xc-stm32f398xe-advanced-arm-based-mcus-stmicroelectronics.pdf">STM32F303xB/C/D/E, STM32F303x6/8，STM32F328x8，STM32F358xC，STM32F398xE Reference Manual</a>（以下Peripheral Manual）: 
+今回使うボードのCPUのペリフェラル（周辺機器）のマニュアルです．</li>
+</ul>
+</blockquote>
+<blockquote>
+<ul>
+<li><a href="https://www.st.com/resource/en/datasheet/stm32f303vc.pdf">STM32F303xB，STM32F303xC Datasheet</a>（以下Datasheet）:
+CPUについての詳細です．</li>
+</ul>
+</blockquote>
+<h1><a class="header" href="#hello-world" id="hello-world">Hello World</a></h1>
+<p>前置きが長くなってしまいました．ようやく本題に入っていきます．何はともあれ，まずは<code>Hello, world!</code>です．</p>
+<h2><a class="header" href="#プロジェクトの作成" id="プロジェクトの作成">プロジェクトの作成</a></h2>
+<p>いつも通り，<code>cargo</code>を使用して新しいプロジェクトを作ります．</p>
+<pre><code class="language-shell">$ cargo new haribote_embedded_os
+$ cd haribote_embedded_os
+</code></pre>
+<p>このプロジェクトでは<code>nightly</code>rustを使うので，
+<code>rust-toolchain</code>ファイルを使ってそれを指定します．</p>
+<pre><code class="language-shell">$ echo &quot;nightly-2020-04-21&quot; &gt; rust-toolchain
+</code></pre>
+<h1><a class="header" href="#プログラムの実行" id="プログラムの実行">プログラムの実行</a></h1>
+<p><code>Hello World</code>するためには，当然プログラムを動かさなければならないわけですが，OSがない環境では，どうすればプログラムを動かすことができるのでしょうか．</p>
+<p>分からないときは，マニュアルを読みます．答えは<a href="https://www.st.com/resource/en/reference_manual/dm00043574-stm32f303xb-c-d-e-stm32f303x6-8-stm32f328x8-stm32f358xc-stm32f398xe-advanced-arm-based-mcus-stmicroelectronics.pdf">Peripheral Manual</a>に書いてあります．
+<code>3.5 Boot configuration</code>を見ると，<code>BOOT0</code>の値が0のとき，Main Flash Memoryがブートエリアになると書いてあります．<a href="https://www.st.com/resource/en/datasheet/stm32f303vc.pdf">Datasheet</a>の<code>5 Memory mapping</code>を見ると，Flash Memoryは<code>0x0800 0000</code>番地から始まると書いてあります．これでブートエリアの場所がわかりました．</p>
+<p>次に，<a href="https://static.docs.arm.com/ddi0403/ed/DDI0403E_d_armv7m_arm.pdf">Armv7-m Manual</a>を見てください．
+これがなかなかに分かりにくいんですが，<code>B1.5.5 Reset behavior</code>の疑似コードを読むと，このように書いてあります．</p>
+<pre><code class="language-cpp">TakeReset()
+    ...
+    bits(32) vectortable = VTOR&lt;31:7&gt;:'0000000';
+    SP_main = MemA_with_priv[vectortable, 4, AccType_VECTABLE] AND 0xFFFFFFFC&lt;31:0&gt;;
+    ...
+    tmp = MemA_with_priv[vectortable+4, 4, AccType_VECTABLE];
+    ...
+    BranchTo(tmp AND 0xFFFFFFFE&lt;31:0&gt;); /* address of reset service routine */
+</code></pre>
+<blockquote>
+<p><code>SP_main</code>については後で触れます．</p>
+</blockquote>
+<p>疑似コードに登場した<code>VTOR</code>については，<code>B3.2.5 Vector Table Offset Register, VTOR</code>に説明が書いてあります．この値が0というのは，メモリのコード領域の最下位部分（開始アドレス）に<code>Vector Table</code>を配置するということです．</p>
+<p>コード領域の開始アドレスがどこだったか覚えていますか？
+<code>0x0800 0000</code>番地ですね．</p>
+<p>ここまでで，<code>Vector Table</code>が<code>0x0800 0000</code>番地に配置されることが分かりました．</p>
+<p>疑似コードをもう1度見てください．最後に<code>vectortable+4</code>に<code>Branch（jump）</code>しています．
+&gt;よく見ると<code>0xFFFFFFFE</code>とのANDをとっていますが，重要ではないので気にしなくて大丈夫です．</p>
+<p>リセット後，諸々の処理の後に実行される場所が<code>vectortable+4</code>だということが，何となく読み取れたところで，次に，この<code>Vector Table</code>についてもう少し詳しく見ていきましょう．</p>
+<h2><a class="header" href="#ベクタテーブル" id="ベクタテーブル">ベクタテーブル</a></h2>
+<p><a href="https://static.docs.arm.com/ddi0403/ed/DDI0403E_d_armv7m_arm.pdf">Armv7-m Manual</a>の<code>B1.5.3 The vector table</code>と<code>B1.5.2 Exception number definition</code>を見ると，<code>Vector Table</code>の中身が分かります．以下の表に，<code>Vector Table</code>の構造を示します．</p>
+<table><thead><tr><th align="center">例外番号</th><th align="center">アドレス</th><th align="center">ベクタ</th></tr></thead><tbody>
+<tr><td align="center">-</td><td align="center">0x00</td><td align="center">SP_main（Main stack pointer）</td></tr>
+<tr><td align="center">1</td><td align="center">0x04</td><td align="center">Reset</td></tr>
+<tr><td align="center">2</td><td align="center">0x08</td><td align="center">NMI</td></tr>
+<tr><td align="center">3</td><td align="center">0x0c</td><td align="center">HardFault</td></tr>
+<tr><td align="center">4</td><td align="center">0x10</td><td align="center">MemManage</td></tr>
+<tr><td align="center">5</td><td align="center">0x14</td><td align="center">BusFault</td></tr>
+<tr><td align="center">6</td><td align="center">0x18</td><td align="center">UsageFault</td></tr>
+<tr><td align="center">7~10</td><td align="center">0x1c~0x28</td><td align="center">Reserved</td></tr>
+<tr><td align="center">11</td><td align="center">0x2c</td><td align="center">SVCall</td></tr>
+<tr><td align="center">12</td><td align="center">0x30</td><td align="center">DebugMonitor</td></tr>
+<tr><td align="center">13</td><td align="center">0x34</td><td align="center">Reserved</td></tr>
+<tr><td align="center">14</td><td align="center">0x38</td><td align="center">PendSV</td></tr>
+<tr><td align="center">15</td><td align="center">0x3c</td><td align="center">SysTick</td></tr>
+</tbody></table>
+<p>気になることがいくつかあるでしょう．順番に見ていきます．</p>
+<p>まず，先ほどの疑似コードで登場していたのに無視していた，<code>SP_main</code>が<code>0x00</code>にあります．これはコードの内容とも矛盾しませんね．<code>SP_main</code>についてはまた後で触れます．</p>
+<p>次に移ります．先ほど，リセット後に実行される場所が<code>vectortable+4</code>だと言った話を覚えていますか？表の<code>0x04</code>を見ると，確かに<code>Reset</code>と書いてあります！話がつながってきました．</p>
+<p>ずばり，<code>Vector Table</code>の正体は，例外ハンドラのエントリーポイントの集まりです．</p>
+<p>例外が発生すると，該当する番号の例外ハンドラが呼ばれます．分かりにくいかもしれないので，リセット例外を例に説明しましょう．</p>
+<p>リセット例外（1番）は，最も優先度が高い例外なので，リセット例外が発生すると，他のどんな処理が実行されている時であっても，その処理は中断し，（先ほどの疑似コードのような処理が行われた後で）<code>Reset</code>ハンドラに処理が移ります．</p>
+<p>リセット例外は，電源を入れた直後や，リセットボタンを押した時に発生します．</p>
+<p>というわけで，<code>Vector Table</code>の2つ目のエントリーにプログラムを置けば，実行できそうです．</p>
+<h3><a class="header" href="#sp_main" id="sp_main">SP_main</a></h3>
+<p>ずっと後回しにしてきた<code>SP_main</code>の説明です．<code>SP_main</code>っていうのは皆さんの思っている通りスタックポインタのことなんですが，実はこのArmv7-mアーキテクチャでは，スタックが2つ存在します．メインスタックとプロセススタックです．<code>SP_main</code>は，そのうちのメインスタックのポインタです．</p>
+<h4><a class="header" href="#スタック" id="スタック">スタック</a></h4>
+<p>分からない方もいると思うので，スタックについて簡単に説明します．
+スタックというのは，簡単にいうと，今の状態を一時的に退避する場所で，イメージ的には上に積み重ねていく形になります．1番最後に積んだものが1番上にあるので，取り出す時も，1番最後に積んだものから取り出されていきます．</p>
+<blockquote>
+<p>この特徴から，スタックのデータ構造は，<code>LIFO(Last-In，First-Out)</code>と呼ばれます．</p>
+</blockquote>
+<p>どんな時に，どんな風にこのスタックを使うかというと，例えば，関数呼び出しのときなどです．関数Aの処理の中に，関数Bを呼び出す処理があったとしましょう．
+よくある状況ですよね．</p>
+<p>プログラムを実行するとき，コンピュータは<code>レジスタ</code>という物を使います．これは，一時的な計算結果などの値を保存するための変数のような物です．しかし，このレジスタは，無限にあるわけではなく，Armv7-mでは，15個くらいしかありません．しかも，このうちのいくつかは特殊な用途に使われるため，全てを自由に使えるわけではありません．つまり，これらレジスタは使い回す必要があります．</p>
+<p>仮に，関数Aではレジスタを10個，関数Bでもレジスタを10個使うとしましょう．合計すると，明らかに足りません．かと言って，関数Bにジャンプする際に，使ってたレジスタの値を捨ててしまうと，関数Bが終わり，関数Aに戻ってきた時に，関数Aのさっきまでの計算結果が全部パーなってしまってるので，処理を再開できません．</p>
+<p>そこで登場するのが，スタックです．関数Bに飛ぶ前に，関数Aと関数Bで被ってるレジスタがある場合は，その値を，一旦別のところ，つまりスタックに退避します．言っていませんでしたが，関数Aにおける，関数Bを実行した後の次の命令のアドレスも保存しておかないと，関数Aに戻ってくることができなくなるので，この値（PCレジスタの値）もスタックに積んでおきます．</p>
+<p>関数Bが終わった後，関数Aに戻ってくる際に，スタックの1番上から順番にこれらの値を取り出して，レジスタに書き戻すことで，正常に関数Aに復帰できるわけです．</p>
+<p>話を一気に戻しますが，このスタックが，Armv7-mでは2種類あるということです．リセットの後や，ハンドラモード（今は聞き流してください）では，メインスタックが使われます．</p>
+<p>ここまでスタックの1番上という言い方をしてきましたが，この1番上のところのアドレスを指すのがスタックポインタです．<code>SP_main</code>は，メインスタックのスタックポインタです．</p>
+<p>ふー！そろそろ疲れてきた方もいるのではないでしょうか．この章は，実は全体の中で多分最も内容が多くて重い章ですので，ここまでこれば安心です．</p>
+<p>お疲れ様でした．次はいよいよ，この章で確認したことを元に，プログラムを書いていきます！</p>
+<h1><a class="header" href="#メモリ上の配置" id="メモリ上の配置">メモリ上の配置</a></h1>
+<p>まずは，前回の章の内容を忘れないうちに，ベクタテーブルをメモリ上の正しい位置に配置する必要があります．そこで登場するのが，リンカスクリプトです．</p>
+<p>プロジェクトのルートディレクトリに，<code>link.ld</code>というファイルを作成します．</p>
+<pre><code class="language-shell">$ touch link.ld
+</code></pre>
+<h2><a class="header" href="#リンカスクリプト" id="リンカスクリプト">リンカスクリプト</a></h2>
+<p>リンカスクリプトの書き方についての説明はあまりしませんが，そんなに難しくないので，やってることがわかれば大丈夫です．説明よりも先に見た方がいいと思うので，先にスクリプトを載せて，後から説明をしていくという方式にします．以下の内容を，<code>link.ld</code>に書き込みます．</p>
+<pre><code>MEMORY
+{
+  FLASH : ORIGIN = 0x08000000, LENGTH = 256K
+  RAM : ORIGIN = 0x20000000, LENGTH = 40K
+}
+
+ENTRY(Reset);
+
+SECTIONS
+{
+  .vectors ORIGIN(FLASH) :
+  {
+    LONG(ORIGIN(RAM) + LENGTH(RAM));
+
+    KEEP(*(.vectors.exceptions));
+  } &gt; FLASH
+
+  .text :
+  {
+    *(.text .text.*);
+  } &gt; FLASH
+
+  .rodata :
+  {
+    *(.rodata .rodata.*);
+  } &gt; FLASH
+
+  .bss (NOLOAD):
+  {
+    _sbss = .;
+    *(.bss .bss.*);
+    _ebss = .;
+  } &gt; RAM
+
+  .data : AT(ADDR(.rodata) + SIZEOF(.rodata))
+  {
+    _sdata = .;
+    *(.data .data.*);
+    _edata = .;
+  } &gt; RAM
+
+  _sidata = LOADADDR(.data);
+
+  /DISCARD/ :
+  {
+    *(.ARM.exidx .ARM.exidx.*);
+  }
+}
+
+PROVIDE(NMI = DefaultExceptionHandler);
+PROVIDE(HardFault = DefaultExceptionHandler);
+PROVIDE(MemManage = DefaultExceptionHandler);
+PROVIDE(BusFault = DefaultExceptionHandler);
+PROVIDE(UsageFault = DefaultExceptionHandler);
+PROVIDE(SVCall = DefaultExceptionHandler);
+PROVIDE(PendSV = DefaultExceptionHandler);
+PROVIDE(SysTick = DefaultExceptionHandler);
+</code></pre>
+<p>順番に見ていきましょう．</p>
+<h3><a class="header" href="#memory" id="memory">MEMORY</a></h3>
+<p>最初にMEMORYブロックです．ここでは，メモリ空間の定義を行なっています．</p>
+<p>一般に，マイコンのメモリは2種類のメモリから構成されています．1つはROM，もう1つはRAMです．</p>
+<h4><a class="header" href="#rom" id="rom">ROM</a></h4>
+<p>ROM（Read Only Memory）は，電源を切ってもデータが消えない読み出し専用のメモリです．主に、電源投入時，リセット時に実行するプログラムや，プログラム実行中に変化しない定数を保存します．マイコンでは，多くの場合，フラッシュメモリをROMとして搭載しています．</p>
+<h4><a class="header" href="#ram" id="ram">RAM</a></h4>
+<p>RAM（Random Access Memory）は，データの読み書きは自由に行えるが，電源を切ると内容が消えるメモリです．主に，実行中のプログラムの変数を保存します．</p>
+<p>これら2つのメモリを用いて，プログラムを動かすので，私たちは，コンパイラにこれらのメモリのアドレスを教える必要があります．</p>
+<p><a href="https://www.st.com/resource/en/datasheet/stm32f303vc.pdf">Datasheet</a>の<code>5 Memory mapping</code>を見ると，FLASHの領域は<code>0x0800_0000</code>から始まっていることがわかります．また，<code>3.3 Embedded Flash memory</code>によると，サイズは<code>256 Kbytes</code>であることがわかります．</p>
+<p>RAMも同様です．<code>5 Memory mapping</code>を見ると，FLASHの領域は<code>0x2000_0000</code>から始まっていることがわかります．<code>3.3 Embedded Flash memory</code>によると，サイズは<code>40 Kbytes</code>であることがわかります．</p>
+<pre><code>MEMORY
+{
+  FLASH : ORIGIN = 0x08000000, LENGTH = 256K
+  RAM : ORIGIN = 0x20000000, LENGTH = 40K
+}
+</code></pre>
+<h3><a class="header" href="#entry" id="entry">ENTRY</a></h3>
+<p>エントリーポイントの定義を行います．コンパイラに，エントリーポイントの場所を教えます．まだコードを書いてないのですが，<code>Reset</code>という関数をエントリーポイントとします．このエントリーポイントは，ベクタテーブルの<code>Reset</code>ベクタとしても使います．</p>
+<pre><code>ENTRY(Reset);
+</code></pre>
+<h3><a class="header" href="#sections" id="sections">SECTIONS</a></h3>
+<p>SECTIONSでは，プログラムを作成する際に配置の基準となる，セクションと呼ばれる単位が，実際メモリのどこに置かれるのかを記述します．主に次のような感じになっています．</p>
+<pre><code>SECTIONS {
+    セクション名 : {} &gt; メモリ領域名
+    コマンド
+    ...
+}
+</code></pre>
+<p>セクション名の中には，用途が決まっている物がいくつかあるので，それを表で示します．</p>
+<table><thead><tr><th align="center">セクション名</th><th align="center">説明</th></tr></thead><tbody>
+<tr><td align="center">.vectors</td><td align="center">割り込みベクタが配置されます．</td></tr>
+<tr><td align="center">.text</td><td align="center">プログラムのコード（関数）が配置されます．</td></tr>
+<tr><td align="center">.rodata</td><td align="center">読み出し専用のデータ（プログラムの定数）が配置されます．</td></tr>
+<tr><td align="center">.bss</td><td align="center">初期値を持たない静的変数などが配置されます．</td></tr>
+<tr><td align="center">.data</td><td align="center">初期値を持つ静的変数などが配置されます．</td></tr>
+</tbody></table>
+<p>順番に見ていきましょう．</p>
+<p>FLASHに配置するセクションは，<code>.vectors</code>，<code>.text</code>，<code>.rodata</code>の3つです．</p>
+<p><code>.vectors</code>は，前章で詳しく説明した<code>Vector Table</code>が配置される場所です．</p>
+<p>最初のエントリが何か覚えていますか？<code>SP_main</code>の初期値でしたね．前章でスタックには積み上がっていくというような表現をしましたが，CortexーM4では，正確には積み下がっていきます．難しい話ではないです．スタックにデータを積む際に，アドレスが減る方向に積まれていくということです．なので，<code>SP_main</code>の初期値には，RAMの末尾のアドレスを指定します．</p>
+<p>あとは例外ハンドラのエントリーが続くので，そこを<code>.vectors.exceptions</code>とします．中身はあとでコードの方に書きます．</p>
+<p>というわけで，FLASHに配置する3つのセクションはこのようになります．</p>
+<pre><code>  .vectors ORIGIN(FLASH) :
+  {
+    LONG(ORIGIN(RAM) + LENGTH(RAM));
+
+    KEEP(*(.vectors.exceptions));
+  } &gt; FLASH
+
+  .text :
+  {
+    *(.text .text.*);
+  } &gt; FLASH
+
+  .rodata :
+  {
+    *(.rodata .rodata.*);
+  } &gt; FLASH
+</code></pre>
+<p>RAMに配置されるセクションは，<code>.bss</code>，<code>.data</code>の2つです．これら2つの領域は，プログラム中で値を書き換える必要があるので，RAMに配置する必要があります．プログラムからアドレスを参照できるように，ロケーションカウンタ（<code>.</code>）というのを使います．</p>
+<pre><code>  .bss (NOLOAD):
+  {
+    _sbss = .;
+    *(.bss .bss.*);
+    _ebss = .;
+  } &gt; RAM
+
+  .data : AT(ADDR(.rodata) + SIZEOF(.rodata))
+  {
+    _sdata = .;
+    *(.data .data.*);
+    _edata = .;
+  } &gt; RAM
+</code></pre>
+<p>ロケーションカウンタに値を代入してるので，<code>_sbss</code>は<code>.bss</code>セクションの先頭アドレス，<code>_ebss</code>は<code>.bss</code>セクションの末尾アドレス，<code>_sdata</code>は<code>.data</code>セクションの先頭アドレス，<code>_edata</code>は<code>.data</code>セクションの末尾アドレスを指します．</p>
+<p>SECTIONSブロックの最後の部分について説明します．</p>
+<p><code>_sidata</code>には<code>.data</code>の，FLASH上での配置アドレスを代入します．
+<code>.data</code>の初期値は，<code>.rodata</code>セクションにあり，<code>.rodata</code>セクションはFLASH上にあります．</p>
+<p><code>/DISCARD/</code>のブロックでは，<code>.ARM.exidx</code>は標準ライブラリでのみ利用するので，破棄しています．</p>
+<pre><code>  _sidata = LOADADDR(.data);
+
+  /DISCARD/ :
+  {
+    *(.ARM.exidx .ARM.exidx.*);
+  }
+</code></pre>
+<h3><a class="header" href="#provide" id="provide">PROVIDE</a></h3>
+<p>リンカスクリプトの最後の部分です．<code>PROVIDE</code>は，弱結合シンボルと呼ばれるシンボルを生成します．該当する関数が見つからなかった場合は，これを代わりに使うということを指示します．</p>
+<pre><code>PROVIDE(NMI = DefaultExceptionHandler);
+PROVIDE(HardFault = DefaultExceptionHandler);
+PROVIDE(MemManage = DefaultExceptionHandler);
+PROVIDE(BusFault = DefaultExceptionHandler);
+PROVIDE(UsageFault = DefaultExceptionHandler);
+PROVIDE(SVCall = DefaultExceptionHandler);
+PROVIDE(PendSV = DefaultExceptionHandler);
+PROVIDE(SysTick = DefaultExceptionHandler);
+</code></pre>
+<p>なんだか見たことある名前たちですね．これらは全て<code>Vector Table</code>で見た例外ハンドラです．それぞれの例外時の挙動を別々に定義すると大変ですから，該当する例外ハンドラの定義がなければ<code>DefaultExceptionHandler</code>という関数を共通して使いましょうっていう意味です．</p>
+<p>2章連続でかなり長い内容になってしまいました．準備は整ったので，ついに次章で<code>Hello, world!</code>します！</p>
+<h1><a class="header" href="#hello-world-1" id="hello-world-1">Hello, world!</a></h1>
+<p>まず，<code>Cargo.toml</code>に，使用するクレートを記述します．<code>[dependencies]</code>のところを，下のようにしてください．</p>
+<pre><code class="language-toml">[dependencies]
+cortex-m-semihosting = &quot;0.3.5&quot;
+</code></pre>
+<h1><a class="header" href="#ノンプリエンプティブマルチタスク" id="ノンプリエンプティブマルチタスク">ノンプリエンプティブ・マルチタスク</a></h1>
+<h1><a class="header" href="#タイマ割り込みsystick例外" id="タイマ割り込みsystick例外">タイマ割り込み（SysTick例外）</a></h1>
+<h1><a class="header" href="#プリエンプティブマルチタスク" id="プリエンプティブマルチタスク">プリエンプティブ・マルチタスク</a></h1>
+<h1><a class="header" href="#gpioペリフェラル" id="gpioペリフェラル">GPIOペリフェラル</a></h1>
+<h1><a class="header" href="#参考文献" id="参考文献">参考文献</a></h1>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+
+                
+            </nav>
+
+        </div>
+
+        
+        <!-- Livereload script (if served using the cli tool) -->
+        <script type="text/javascript">
+            var socket = new WebSocket("ws://localhost:3001");
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+        
+
+        
+
+        
+        
+        
+        <script type="text/javascript">
+            window.playpen_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+        
+        <script type="text/javascript">
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+        
+        
+
+    </body>
+</html>
