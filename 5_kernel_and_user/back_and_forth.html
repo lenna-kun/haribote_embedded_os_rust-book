@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>カーネルとユーザ - Haribote Embedded OS Rust Book</title>
+        <title>back-and-forth - Haribote Embedded OS Rust Book</title>
         
 
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../index.html">はじめに</a></li><li class="chapter-item expanded "><a href="../1_intro/embedded_os.html"><strong aria-hidden="true">1.</strong> 組み込みOSとは</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../1_intro/haribote_embedded_os.html"><strong aria-hidden="true">1.1.</strong> Haribote組み込みOS</a></li></ol></li><li class="chapter-item expanded "><a href="../2_setup/setup.html"><strong aria-hidden="true">2.</strong> 開発環境の構築</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../2_setup/rust.html"><strong aria-hidden="true">2.1.</strong> Rustのインストール</a></li><li class="chapter-item expanded "><a href="../2_setup/gdb.html"><strong aria-hidden="true">2.2.</strong> GDBのインストール</a></li><li class="chapter-item expanded "><a href="../2_setup/openocd.html"><strong aria-hidden="true">2.3.</strong> OpenOCDのインストール</a></li></ol></li><li class="chapter-item expanded "><a href="../3_rtfm/rtfm.html"><strong aria-hidden="true">3.</strong> RTFM</a></li><li class="chapter-item expanded "><a href="../4_hello_world/hello_world.html"><strong aria-hidden="true">4.</strong> Hello, world!</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../4_hello_world/boot.html"><strong aria-hidden="true">4.1.</strong> プログラムの実行</a></li><li class="chapter-item expanded "><a href="../4_hello_world/vector_table.html"><strong aria-hidden="true">4.2.</strong> メモリ上の配置</a></li><li class="chapter-item expanded "><a href="../4_hello_world/run_hello_world.html"><strong aria-hidden="true">4.3.</strong> Hello, world!</a></li><li class="chapter-item expanded "><a href="../4_hello_world/command.html"><strong aria-hidden="true">4.4.</strong> コマンドの省略</a></li></ol></li><li class="chapter-item expanded "><a href="../5_kernel_and_user/kernel_and_user.html" class="active"><strong aria-hidden="true">5.</strong> カーネルとユーザ</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../5_kernel_and_user/svcall.html"><strong aria-hidden="true">5.1.</strong> SVCall例外（システムコール）</a></li><li class="chapter-item expanded "><a href="../5_kernel_and_user/context_switch.html"><strong aria-hidden="true">5.2.</strong> コンテキストスイッチの実装</a></li><li class="chapter-item expanded "><a href="../5_kernel_and_user/process.html"><strong aria-hidden="true">5.3.</strong> プロセスの管理</a></li><li class="chapter-item expanded "><a href="../5_kernel_and_user/back_and_forth.html"><strong aria-hidden="true">5.4.</strong> back-and-forth</a></li></ol></li><li class="chapter-item expanded "><a href="../6_scheduler/scheduler.html"><strong aria-hidden="true">6.</strong> スケジューラの実装</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../6_scheduler/non-preemptive_multitasking.html"><strong aria-hidden="true">6.1.</strong> ノンプリエンプティブ・マルチタスク</a></li></ol></li><li class="chapter-item expanded "><a href="../7_timer_interrupt/timer_interrupt.html"><strong aria-hidden="true">7.</strong> タイマ割り込み（SysTick例外）</a></li><li class="chapter-item expanded "><a href="../8_preemptive_multitasking/preemptive_multitasking.html"><strong aria-hidden="true">8.</strong> プリエンプティブ・マルチタスク</a></li><li class="chapter-item expanded "><a href="../9_gpio_peripheral/gpio_peripheral.html"><strong aria-hidden="true">9.</strong> GPIOペリフェラル</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><a href="../references.html">参考文献</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../index.html">はじめに</a></li><li class="chapter-item expanded "><a href="../1_intro/embedded_os.html"><strong aria-hidden="true">1.</strong> 組み込みOSとは</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../1_intro/haribote_embedded_os.html"><strong aria-hidden="true">1.1.</strong> Haribote組み込みOS</a></li></ol></li><li class="chapter-item expanded "><a href="../2_setup/setup.html"><strong aria-hidden="true">2.</strong> 開発環境の構築</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../2_setup/rust.html"><strong aria-hidden="true">2.1.</strong> Rustのインストール</a></li><li class="chapter-item expanded "><a href="../2_setup/gdb.html"><strong aria-hidden="true">2.2.</strong> GDBのインストール</a></li><li class="chapter-item expanded "><a href="../2_setup/openocd.html"><strong aria-hidden="true">2.3.</strong> OpenOCDのインストール</a></li></ol></li><li class="chapter-item expanded "><a href="../3_rtfm/rtfm.html"><strong aria-hidden="true">3.</strong> RTFM</a></li><li class="chapter-item expanded "><a href="../4_hello_world/hello_world.html"><strong aria-hidden="true">4.</strong> Hello, world!</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../4_hello_world/boot.html"><strong aria-hidden="true">4.1.</strong> プログラムの実行</a></li><li class="chapter-item expanded "><a href="../4_hello_world/vector_table.html"><strong aria-hidden="true">4.2.</strong> メモリ上の配置</a></li><li class="chapter-item expanded "><a href="../4_hello_world/run_hello_world.html"><strong aria-hidden="true">4.3.</strong> Hello, world!</a></li><li class="chapter-item expanded "><a href="../4_hello_world/command.html"><strong aria-hidden="true">4.4.</strong> コマンドの省略</a></li></ol></li><li class="chapter-item expanded "><a href="../5_kernel_and_user/kernel_and_user.html"><strong aria-hidden="true">5.</strong> カーネルとユーザ</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../5_kernel_and_user/svcall.html"><strong aria-hidden="true">5.1.</strong> SVCall例外（システムコール）</a></li><li class="chapter-item expanded "><a href="../5_kernel_and_user/context_switch.html"><strong aria-hidden="true">5.2.</strong> コンテキストスイッチの実装</a></li><li class="chapter-item expanded "><a href="../5_kernel_and_user/process.html"><strong aria-hidden="true">5.3.</strong> プロセスの管理</a></li><li class="chapter-item expanded "><a href="../5_kernel_and_user/back_and_forth.html" class="active"><strong aria-hidden="true">5.4.</strong> back-and-forth</a></li></ol></li><li class="chapter-item expanded "><a href="../6_scheduler/scheduler.html"><strong aria-hidden="true">6.</strong> スケジューラの実装</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../6_scheduler/non-preemptive_multitasking.html"><strong aria-hidden="true">6.1.</strong> ノンプリエンプティブ・マルチタスク</a></li></ol></li><li class="chapter-item expanded "><a href="../7_timer_interrupt/timer_interrupt.html"><strong aria-hidden="true">7.</strong> タイマ割り込み（SysTick例外）</a></li><li class="chapter-item expanded "><a href="../8_preemptive_multitasking/preemptive_multitasking.html"><strong aria-hidden="true">8.</strong> プリエンプティブ・マルチタスク</a></li><li class="chapter-item expanded "><a href="../9_gpio_peripheral/gpio_peripheral.html"><strong aria-hidden="true">9.</strong> GPIOペリフェラル</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><a href="../references.html">参考文献</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -147,24 +147,50 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#カーネルとユーザ" id="カーネルとユーザ">カーネルとユーザ</a></h1>
-<p>カーネルというのは，OSの中核となるプログラムのことです．反対に，ユーザプログラムは，OSの上で実行されるプログラムです．もしユーザ空間で，全ての命令が実行できるような状態だと，実行するプログラムによっては，他のプロセスやOSが破壊される可能性があります．</p>
-<p>そのため，ユーザー空間上のプロセスは，カーネル空間に直接アクセスすることができないようになっています．OSはシステムコールというAPIをユーザプログラムに提供し，ユーザプログラムは，そのシステムコールによってのみカーネル空間に間接的にアクセスすることができます．これにより，他のプロセスや，OSを守ことができるわけです．</p>
-<p>この本では，カーネルで，ユーザプログラムのタスクスケジューリングを行います．タスクスケジューリングというのは，それぞれのタスクをどれくらいの時間実行して実行するタスクを切り替えるのかや，どういう順番でタスクを実行していくかなどの管理を行うことです．これを実装するためには，動作中のユーザプロセスを一旦停止させてカーネルに処理を移し，カーネルから次のタスクの実行を行うという仕組みが必要になります．</p>
-<p>まずは簡単なマルチタスクを実装するため，ユーザプロセスが自らCPUの使用権を手放す仕組みを，システムコールで実現しましょう．</p>
+                        <h1><a class="header" href="#back-and-forth" id="back-and-forth">back-and-forth</a></h1>
+<p>前章までで，プロセスを管理する仕組みを実装しました．この章では，実際にカーネル空間とユーザ空間の間を行き来するコードを書き，動かすことで，説明ばかりで全体像がぼんやりとしていたこの章を綺麗に締め括ります．</p>
+<p>まずは，ユーザ空間で実行するプロセスを用意します．今回は，&quot;User&quot;と表示してカーネルに切り替えるというのを永久に繰り返すだけのプログラムにしましょう．</p>
+<pre><code class="language-rs">pub fn app() -&gt; ! {
+    loop {
+        hprintln!(&quot;User&quot;).unwrap();
+        unsafe { llvm_asm!(&quot;svc 0&quot;::::&quot;volatile&quot;); }
+    }
+}
+</code></pre>
+<p>プロセス用のスタックは前章で用意したので，それと上の関数でプロセスを初期化します．<code>main.rs</code>の，<code>loop{}</code>の手前に，以下の文を加えてください．</p>
+<pre><code class="language-rs">let mut process = Process::new(&amp;mut *PROCESS_STACK, app);
+</code></pre>
+<p>これでプロセスの初期化が完了しました．次に，<code>loop{}</code>の中を書き換えます．&quot;Kernel&quot;と表示してユーザに切り替えるというのを永久に繰り返すように書き換えましょう．</p>
+<pre><code class="language-rs">    loop {
+        hprintln!(&quot;Kernel&quot;).unwrap();
+        process.switch_to();
+    }
+</code></pre>
+<p>これで終わりです．プログラムの簡単な流れを説明します．まず，ユーザ空間で実行するプロセスの初期化を行ったあとで，カーネルから<code>svc</code>命令を発行することで，初期化したプロセススタックを用いて実際に<code>SVCall</code>例外からユーザ空間に復帰します．ユーザプロセスでも，すぐに<code>svc</code>命令を発行することで，処理がカーネルにまた戻ってきます．あとはこれを永久に繰り返します．また，ユーザプロセスからカーネルに帰ってきた時にレジスタの値を退避し，また次カーネルからユーザに切り替える時に，退避したデータをレジスタに戻してるので，2回目以降ユーザに切り替わる時も，しっかり前回の途中のところから処理が再スタートします．</p>
+<p>では，実際に実行してみましょう！OpenOCDのログを見ると，以下の出力が確認できるはずです．</p>
+<pre><code class="language-shell">Hello, world!
+Kernel
+User
+Kernel
+User
+Kernel
+User
+...
+</code></pre>
+<p>カーネルとユーザを行き来できていることがひと目で分かる，わかりやすい挙動ですね！</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                         
-                            <a rel="prev" href="../4_hello_world/command.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../5_kernel_and_user/process.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
                         
 
                         
-                            <a rel="next" href="../5_kernel_and_user/svcall.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="../6_scheduler/scheduler.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         
@@ -176,13 +202,13 @@
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                 
-                    <a rel="prev" href="../4_hello_world/command.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../5_kernel_and_user/process.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
                 
 
                 
-                    <a rel="next" href="../5_kernel_and_user/svcall.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="../6_scheduler/scheduler.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
                 
