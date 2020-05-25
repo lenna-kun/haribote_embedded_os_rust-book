@@ -874,7 +874,7 @@ impl Process {
 }
 </code></pre>
 <p>プロセス用のスタックは前章で用意したので，それと上の関数でプロセスを初期化します．<code>main.rs</code>の，<code>loop{}</code>の手前に，以下の文を加えてください．</p>
-<pre><code class="language-rs">let mut process = Process::new(&amp;mut *PROCESS_STACK, app);
+<pre><code class="language-rs">    let mut process = Process::new(&amp;mut *PROCESS_STACK, app);
 </code></pre>
 <p>これでプロセスの初期化が完了しました．次に，<code>loop{}</code>の中を書き換えます．&quot;Kernel&quot;と表示してユーザに切り替えるというのを永久に繰り返すように書き換えましょう．</p>
 <pre><code class="language-rs">    loop {
