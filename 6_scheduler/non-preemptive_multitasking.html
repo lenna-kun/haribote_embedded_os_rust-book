@@ -148,6 +148,120 @@
                 <div id="content" class="content">
                     <main>
                         <h1><a class="header" href="#ノンプリエンプティブマルチタスク" id="ノンプリエンプティブマルチタスク">ノンプリエンプティブ・マルチタスク</a></h1>
+<p>前章で説明したスケジューラを実装していきます．といっても，新しく説明することはありませんから，先にコードを載せます．</p>
+<pre><code class="language-rs">const MAX_NUMBER_OF_PROCESSES: usize = 4;
+
+pub struct Kernel {
+    processes: [Option&lt;Process&gt;; MAX_NUMBER_OF_PROCESSES],
+}
+
+impl Kernel {
+    pub fn new() -&gt; Self {
+        Kernel {
+            processes: [None, None, None, None],
+        }
+    }
+
+    pub fn load_process(&amp;mut self, process: Process) -&gt; Result&lt;(), ()&gt; {
+        let index: usize = match self.processes.iter().position(|p| p.is_none()) {
+            Some(n) =&gt; n,
+            None =&gt; return Err(()),
+        };
+        self.processes[index].replace(process);
+        Ok(())
+    }
+
+    pub fn run_scheduler(&amp;mut self) -&gt; ! {
+        let len = match self.processes.iter().position(|p| p.is_none()) {
+            Some(n) =&gt; n,
+            None =&gt; MAX_NUMBER_OF_PROCESSES,
+        };
+        let mut next = 0;
+        loop {
+            let next_process = self.processes[next].as_mut();
+            if next_process.is_none() {
+                unimplemented!();
+            }
+            next_process.map(|p| { p.switch_to(); });
+            next = (next + 1) % len;
+        }
+    }
+}
+</code></pre>
+<p><code>load_process</code>で，管理する配列の中にタスクを加えて，<code>run_scheduler</code>で順番にタスクを実行します．現在の<code>Reset</code>ハンドラの最後のループを，<code>run_scheduler</code>に置き換えることを想定しています．<code>run_scheduler</code>のループでは，あるプロセスに<code>switch_to</code>してはそのタスクの<code>svc</code>命令によって戻ってきて，次のプロセスに<code>switch_to</code>するというのを繰り返します．</p>
+<p>では，実際にマルチタスクができるかを確かめるために，ユーザプロセスを4つに増やして試してみましょう．前回の<code>app</code>関数の代わりに，以下の4つの関数を書き加え，それぞれのプロセススタックも用意してください．</p>
+<pre><code class="language-rs">pub static mut PROCESS_STACK1: Aligned&lt;A8, [u8; 1024]&gt; = Aligned([0; 1024]);
+pub static mut PROCESS_STACK2: Aligned&lt;A8, [u8; 1024]&gt; = Aligned([0; 1024]);
+pub static mut PROCESS_STACK3: Aligned&lt;A8, [u8; 1024]&gt; = Aligned([0; 1024]);
+pub static mut PROCESS_STACK4: Aligned&lt;A8, [u8; 1024]&gt; = Aligned([0; 1024]);
+
+pub fn app1() -&gt; ! {
+    let mut cnt = 0;
+    loop {
+        hprintln!(&quot;Process1: cnt = {}&quot;, cnt).unwrap();
+        unsafe { llvm_asm!(&quot;svc 0&quot;::::&quot;volatile&quot;); }
+        cnt = (cnt + 1) % 10000;
+    }
+}
+pub fn app2() -&gt; ! {
+    let mut cnt = 0;
+    loop {
+        hprintln!(&quot;Process2: cnt = {}&quot;, cnt).unwrap();
+        unsafe { llvm_asm!(&quot;svc 0&quot;::::&quot;volatile&quot;); }
+        cnt = (cnt + 1) % 10000;
+    }
+}
+pub fn app3() -&gt; ! {
+    let mut cnt = 0;
+    loop {
+        hprintln!(&quot;Process3: cnt = {}&quot;, cnt).unwrap();
+        unsafe { llvm_asm!(&quot;svc 0&quot;::::&quot;volatile&quot;); }
+        cnt = (cnt + 1) % 10000;
+    }
+}
+pub fn app4() -&gt; ! {
+    let mut cnt = 0;
+    loop {
+        hprintln!(&quot;Process4: cnt = {}&quot;, cnt).unwrap();
+        unsafe { llvm_asm!(&quot;svc 0&quot;::::&quot;volatile&quot;); }
+        cnt = (cnt + 1) % 10000;
+    }
+}
+</code></pre>
+<p>次に，<code>Reset</code>ハンドラの，</p>
+<pre><code class="language-rs">   let mut process = Process::new(&amp;mut *PROCESS_STACK, app);
+</code></pre>
+<p>という文以下の部分をループも含めて全部消し，以下のように書き換えます．</p>
+<pre><code class="language-rs">    let process1 = Process::new(&amp;mut *PROCESS_STACK1, app1);
+    let process2 = Process::new(&amp;mut *PROCESS_STACK2, app2);
+    let process3 = Process::new(&amp;mut *PROCESS_STACK3, app3);
+    let process4 = Process::new(&amp;mut *PROCESS_STACK4, app4);
+
+    let mut kernel = Kernel::new();
+
+    kernel.load_process(process1).unwrap();
+    kernel.load_process(process2).unwrap();
+    kernel.load_process(process3).unwrap();
+    kernel.load_process(process4).unwrap();
+
+    kernel.run_scheduler()
+</code></pre>
+<p>これで終わりです．では実際に動かしてみましょう！OpenOCDのログを見ると，以下の出力が確認できるはずです．</p>
+<pre><code class="language-shell">Hello, world!
+Process1: cnt = 0
+Process2: cnt = 0
+Process3: cnt = 0
+Process4: cnt = 0
+Process1: cnt = 1
+Process2: cnt = 1
+Process3: cnt = 1
+Process4: cnt = 1
+Process1: cnt = 2
+Process2: cnt = 2
+...
+</code></pre>
+<p>この章で実装したマルチタスクは，<code>ノンプリエンプティブ・マルチタスク</code>と呼ばれます．実行中のユーザプロセスが自発的にOSに制御を返し，CPUの使用権を他のユーザプロセスへ切り替える方式です．皆さんもお気づきの通り，この方式には問題があります．OSへ制御を渡す頻度やタイミングは，各ユーザプログラム任せとなるため，実行するユーザプログラムによっては，OSや，システム全体にまで悪影響を及ぼす可能性があります．</p>
+<p>この方式と対照的に，<code>プリエンプティブ・マルチタスク</code>では，OSが，CPUの割り込み機構を利用し，実行中のユーザプロセスを強制的に停止させ，実行するプロセスの切り替えを行います．この方法では，OSが，それぞれのユーザプロセスを実行する時間などを管理することができるため，実行するユーザプログラムによってOSやシステム全体が悪影響を受けたりすることがなくなります．次章では，この<code>プリエンプティブ・マルチタスク</code>を実装する前準備として，システムタイマを扱っていきます．</p>
 
                     </main>
 

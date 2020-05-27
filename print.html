@@ -249,13 +249,13 @@ Info : stm32f3x.cpu: hardware has 6 breakpoints, 4 watchpoints
 <p><code>以下は，F3を用いる場合に参照するマニュアルですので，違うハードを使っている場合は，そのマニュアルを用意してください．</code></p>
 <blockquote>
 <ul>
-<li><a href="https://static.docs.arm.com/ddi0403/ed/DDI0403E_d_armv7m_arm.pdf">Arm®v7-M Architecture Reference Manual</a>（以下Armv7-m Manual）: ボードに乗っているCPUの基本的な仕様書です．アセンブラ命令の解説や，割り込みが発生したときの挙動，システムレジスタの仕様などが書かれています．</li>
+<li><a href="https://static.docs.arm.com/ddi0403/ed/DDI0403E_d_armv7m_arm.pdf">Arm®v7-M Architecture Reference Manual</a>（以下Armv7-m Manual）: CPUのマニュアルです．アセンブラ命令や，割り込みが発生したときの挙動について書かれています．</li>
 </ul>
 </blockquote>
 <blockquote>
 <ul>
 <li><a href="https://static.docs.arm.com/100166/0001/arm_cortexm4_processor_trm_100166_0001_00_en.pdf">ARM Cortex-M4 Processor Technical Reference Manual Revision r0p1 Documentation</a>（以下Cortex-m4 Manual）: 
-Arm v7-Mの仕様に基づいたアーキテクチャであるCortex-M4のマニュアルです．
+Arm v7命令セットのArm v7-Mプロファイルに準拠したプロセッサーコアであるCortex-M4のマニュアルです．
 割り込みコントローラやメモリ保護機構などの解説があります．</li>
 </ul>
 </blockquote>
@@ -873,7 +873,7 @@ impl Process {
     }
 }
 </code></pre>
-<p>プロセス用のスタックは前章で用意したので，それと上の関数でプロセスを初期化します．<code>main.rs</code>の，<code>loop{}</code>の手前に，以下の文を加えてください．</p>
+<p>プロセス用のスタックは前章で用意したので，それと上の関数でプロセスを初期化します．<code>Reset</code>ハンドラの，<code>loop{}</code>の手前に，以下の文を加えてください．</p>
 <pre><code class="language-rs">    let mut process = Process::new(&amp;mut *PROCESS_STACK, app);
 </code></pre>
 <p>これでプロセスの初期化が完了しました．次に，<code>loop{}</code>の中を書き換えます．&quot;Kernel&quot;と表示してユーザに切り替えるというのを永久に繰り返すように書き換えましょう．</p>
@@ -894,7 +894,127 @@ User
 ...
 </code></pre>
 <p>カーネルとユーザを行き来できていることがひと目で分かる，わかりやすい挙動ですね！</p>
+<h1><a class="header" href="#スケジューラの実装" id="スケジューラの実装">スケジューラの実装</a></h1>
+<h2><a class="header" href="#マルチタスク" id="マルチタスク">マルチタスク</a></h2>
+<p>コンピュータにおいて複数のタスクを切り替えて実行するシステムをマルチタスクと言います．シングル​コアのCPU​が​搭載​さ​れ​た​コンピュータ​では，ある瞬間にはひとつの処理しか実行できません．しかし、CPUの処理時間を短い時間で区切り，タスク間でひとつのCPUを順に使い回すことによって，ユーザから見ると，複数のタスクが同時に実行されているように見えるというわけです．</p>
+<h2><a class="header" href="#スケジューラ" id="スケジューラ">スケジューラ</a></h2>
+<p>スケジューラとは，マルチタスクにおいて，どのような順番でプログラムを実行するかなどを決定し，実行する仕組みです．連結リストやred–black treeなどのデータ構造を用いてタスクを管理するのが一般的ですが，その場合，データ構造の実装から始めなければならなくなるため，この本では，単に配列で管理することにし，管理する最大のタスク数を4つまでとします．</p>
+<p>前回までで，ほとんどの説明や実装が終わっているため，あまり追加の説明はありません．前章のコードでは，カーネルに戻ってきた後にもう1度同じユーザタスクを起動していましたが，その部分を，順番に次のタスクに切り替えていくようにするだけです．では次章で早速実装していきましょう．</p>
 <h1><a class="header" href="#ノンプリエンプティブマルチタスク" id="ノンプリエンプティブマルチタスク">ノンプリエンプティブ・マルチタスク</a></h1>
+<p>前章で説明したスケジューラを実装していきます．といっても，新しく説明することはありませんから，先にコードを載せます．</p>
+<pre><code class="language-rs">const MAX_NUMBER_OF_PROCESSES: usize = 4;
+
+pub struct Kernel {
+    processes: [Option&lt;Process&gt;; MAX_NUMBER_OF_PROCESSES],
+}
+
+impl Kernel {
+    pub fn new() -&gt; Self {
+        Kernel {
+            processes: [None, None, None, None],
+        }
+    }
+
+    pub fn load_process(&amp;mut self, process: Process) -&gt; Result&lt;(), ()&gt; {
+        let index: usize = match self.processes.iter().position(|p| p.is_none()) {
+            Some(n) =&gt; n,
+            None =&gt; return Err(()),
+        };
+        self.processes[index].replace(process);
+        Ok(())
+    }
+
+    pub fn run_scheduler(&amp;mut self) -&gt; ! {
+        let len = match self.processes.iter().position(|p| p.is_none()) {
+            Some(n) =&gt; n,
+            None =&gt; MAX_NUMBER_OF_PROCESSES,
+        };
+        let mut next = 0;
+        loop {
+            let next_process = self.processes[next].as_mut();
+            if next_process.is_none() {
+                unimplemented!();
+            }
+            next_process.map(|p| { p.switch_to(); });
+            next = (next + 1) % len;
+        }
+    }
+}
+</code></pre>
+<p><code>load_process</code>で，管理する配列の中にタスクを加えて，<code>run_scheduler</code>で順番にタスクを実行します．現在の<code>Reset</code>ハンドラの最後のループを，<code>run_scheduler</code>に置き換えることを想定しています．<code>run_scheduler</code>のループでは，あるプロセスに<code>switch_to</code>してはそのタスクの<code>svc</code>命令によって戻ってきて，次のプロセスに<code>switch_to</code>するというのを繰り返します．</p>
+<p>では，実際にマルチタスクができるかを確かめるために，ユーザプロセスを4つに増やして試してみましょう．前回の<code>app</code>関数の代わりに，以下の4つの関数を書き加え，それぞれのプロセススタックも用意してください．</p>
+<pre><code class="language-rs">pub static mut PROCESS_STACK1: Aligned&lt;A8, [u8; 1024]&gt; = Aligned([0; 1024]);
+pub static mut PROCESS_STACK2: Aligned&lt;A8, [u8; 1024]&gt; = Aligned([0; 1024]);
+pub static mut PROCESS_STACK3: Aligned&lt;A8, [u8; 1024]&gt; = Aligned([0; 1024]);
+pub static mut PROCESS_STACK4: Aligned&lt;A8, [u8; 1024]&gt; = Aligned([0; 1024]);
+
+pub fn app1() -&gt; ! {
+    let mut cnt = 0;
+    loop {
+        hprintln!(&quot;Process1: cnt = {}&quot;, cnt).unwrap();
+        unsafe { llvm_asm!(&quot;svc 0&quot;::::&quot;volatile&quot;); }
+        cnt = (cnt + 1) % 10000;
+    }
+}
+pub fn app2() -&gt; ! {
+    let mut cnt = 0;
+    loop {
+        hprintln!(&quot;Process2: cnt = {}&quot;, cnt).unwrap();
+        unsafe { llvm_asm!(&quot;svc 0&quot;::::&quot;volatile&quot;); }
+        cnt = (cnt + 1) % 10000;
+    }
+}
+pub fn app3() -&gt; ! {
+    let mut cnt = 0;
+    loop {
+        hprintln!(&quot;Process3: cnt = {}&quot;, cnt).unwrap();
+        unsafe { llvm_asm!(&quot;svc 0&quot;::::&quot;volatile&quot;); }
+        cnt = (cnt + 1) % 10000;
+    }
+}
+pub fn app4() -&gt; ! {
+    let mut cnt = 0;
+    loop {
+        hprintln!(&quot;Process4: cnt = {}&quot;, cnt).unwrap();
+        unsafe { llvm_asm!(&quot;svc 0&quot;::::&quot;volatile&quot;); }
+        cnt = (cnt + 1) % 10000;
+    }
+}
+</code></pre>
+<p>次に，<code>Reset</code>ハンドラの，</p>
+<pre><code class="language-rs">   let mut process = Process::new(&amp;mut *PROCESS_STACK, app);
+</code></pre>
+<p>という文以下の部分をループも含めて全部消し，以下のように書き換えます．</p>
+<pre><code class="language-rs">    let process1 = Process::new(&amp;mut *PROCESS_STACK1, app1);
+    let process2 = Process::new(&amp;mut *PROCESS_STACK2, app2);
+    let process3 = Process::new(&amp;mut *PROCESS_STACK3, app3);
+    let process4 = Process::new(&amp;mut *PROCESS_STACK4, app4);
+
+    let mut kernel = Kernel::new();
+
+    kernel.load_process(process1).unwrap();
+    kernel.load_process(process2).unwrap();
+    kernel.load_process(process3).unwrap();
+    kernel.load_process(process4).unwrap();
+
+    kernel.run_scheduler()
+</code></pre>
+<p>これで終わりです．では実際に動かしてみましょう！OpenOCDのログを見ると，以下の出力が確認できるはずです．</p>
+<pre><code class="language-shell">Hello, world!
+Process1: cnt = 0
+Process2: cnt = 0
+Process3: cnt = 0
+Process4: cnt = 0
+Process1: cnt = 1
+Process2: cnt = 1
+Process3: cnt = 1
+Process4: cnt = 1
+Process1: cnt = 2
+Process2: cnt = 2
+...
+</code></pre>
+<p>この章で実装したマルチタスクは，<code>ノンプリエンプティブ・マルチタスク</code>と呼ばれます．実行中のユーザプロセスが自発的にOSに制御を返し，CPUの使用権を他のユーザプロセスへ切り替える方式です．皆さんもお気づきの通り，この方式には問題があります．OSへ制御を渡す頻度やタイミングは，各ユーザプログラム任せとなるため，実行するユーザプログラムによっては，OSや，システム全体にまで悪影響を及ぼす可能性があります．</p>
+<p>この方式と対照的に，<code>プリエンプティブ・マルチタスク</code>では，OSが，CPUの割り込み機構を利用し，実行中のユーザプロセスを強制的に停止させ，実行するプロセスの切り替えを行います．この方法では，OSが，それぞれのユーザプロセスを実行する時間などを管理することができるため，実行するユーザプログラムによってOSやシステム全体が悪影響を受けたりすることがなくなります．次章では，この<code>プリエンプティブ・マルチタスク</code>を実装する前準備として，システムタイマを扱っていきます．</p>
 <h1><a class="header" href="#タイマ割り込みsystick例外" id="タイマ割り込みsystick例外">タイマ割り込み（SysTick例外）</a></h1>
 <h1><a class="header" href="#プリエンプティブマルチタスク" id="プリエンプティブマルチタスク">プリエンプティブ・マルチタスク</a></h1>
 <h1><a class="header" href="#gpioペリフェラル" id="gpioペリフェラル">GPIOペリフェラル</a></h1>
